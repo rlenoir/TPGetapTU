@@ -10,20 +10,20 @@ public class Exemple {
 	    User kpu = new User((long) 2, "Olivier", "Capuozzo",null, "prof");
 	    AccPersonalise salonlivre = new AccPersonalise(3, "Salon du livre",1,(long) 1);
 	    Date date = Date.valueOf("2012-10-07"); 
-	    DemandeValidationConsoTempsAccPers dvctap = new DemandeValidationConsoTempsAccPers((long) 1, "2010", date, 20, kpu, salonlivre, nbr, 0);
+	    DemandeValidationConsoTempsAccPers test = new DemandeValidationConsoTempsAccPers((long) 1, "2010", date, 20, kpu, salonlivre, nbr, 0);
 	    
-	    System.out.println(dvctap);
-	    dvctap.setEtat(4);
-	    System.out.println(dvctap);
-	    dvctap.setEtat(32);
-	    System.out.println(dvctap);
-	    dvctap.setEtat(4);
-	    System.out.println(dvctap);
-	    dvctap.setEtat(2048);
-	    System.out.println(dvctap);
-	    dvctap.setEtat(2);
-	    System.out.println(dvctap);
-	    dvctap.setEtat(32);
-	    System.out.println(dvctap);   
+	    System.out.println(test);
+	    test.setEtat(4);
+	    System.out.println(test);
+	    test.setEtat(32);
+	    System.out.println(test);
+	    test.setEtat(4);
+	    System.out.println(test);
+	    test.setEtat(2048);
+	    System.out.println(test);
+	    test.setEtat(2);
+	    System.out.println(test);
+	    test.setEtat(32);
+	    System.out.println(test);   
 	}
 }
