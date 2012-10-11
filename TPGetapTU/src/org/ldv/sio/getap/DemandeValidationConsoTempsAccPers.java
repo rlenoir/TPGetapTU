@@ -141,7 +141,7 @@ public class DemandeValidationConsoTempsAccPers {
 	public int getEtat() {
 		return etat;
 	}
-
+	 
 	/**
 	 * Permet de modifier l'état de la demande
 	 * 
@@ -165,6 +165,8 @@ public class DemandeValidationConsoTempsAccPers {
 	 *            modifiée par le professeur</li>
 	 *            </ul>
 	 */
+	
+	
 	public void setEtat(int etat) {
 		this.etat = etat;
 	}
@@ -176,6 +178,15 @@ public class DemandeValidationConsoTempsAccPers {
 				+ anneeScolaire + ", dateAction=" + dateAction + ", minutes="
 				+ minutes + ", prof=" + prof + ", accPers=" + accPers
 				+ ", eleve=" + eleve + ", etat=" + etat + "]";
+	}
+
+	public boolean isEtatInitial() {
+		if(this.getEtat()==0){
+		  return true;
+		}
+		else{
+		  return false;
+		}
 	}
 
 }
