@@ -1,6 +1,7 @@
 package org.ldv.sio.getap;
 
 import java.sql.Date;
+import org.ldv.sio.getap.DVCTAPException;
 
 /**
  * Demande de validation d'un temps d'accompagnement personnalisé
@@ -9,9 +10,16 @@ import java.sql.Date;
  */
 
 public class DemandeValidationConsoTempsAccPers {
-	private static final int DATE_MODIFIEE = 1024;
-	private static final int DUREE_MODIFIEE = 2048;
-	private static final int AP_MODIFIEE = 4096;
+	private static final int CREER_ELEVE=0;
+	private static final int ACCEPTEE_ELEVE_MODIF_PROF=1;
+	private static final int REFUSEE_ELEVE_MODIF_PROF=2;
+	private static final int MODIF_ELEVE=4;
+	private static final int ANNULEE_ELEVE=8;
+	private static final int ACCEPTEE_PROF=32;
+	private static final int REFUSEE_PROF=64;
+	private static final int DATE_MODIFIEE =1024;
+	private static final int DUREE_MODIFIEE =2048;
+	private static final int AP_MODIFIEE =4096;
 
 	/**
 	 * Identifiant de la DCTAP
@@ -180,13 +188,66 @@ public class DemandeValidationConsoTempsAccPers {
 				+ ", eleve=" + eleve + ", etat=" + etat + "]";
 	}
 
-	public boolean isEtatInitial() {
-		if(this.getEtat()==0){
-		  return true;
-		}
-		else{
-		  return false;
-		}
+
+	
+public boolean isEtatInitial(){
+		Boolean bool = (this.etat & CREER_ELEVE ) == CREER_ELEVE;
+		return bool;
 	}
+
+public boolean isUpdate(){
+		Boolean bool = (this.etat & MODIF_ELEVE ) == MODIF_ELEVE;
+		return bool;
+}
+	
+public void annuleeEleve(){
+	if(this.isEtatInitial() || this.isUpdate())
+	this.etat=ANNULEE_ELEVE;
+}
+
+public void refuseeProf(){
+	if(this.isEtatInitial() || this.isUpdate())
+	this.etat=REFUSEE_PROF;
+}
+
+public void valideeProf(){
+	if(this.isEtatInitial() || this.isUpdate())
+	this.etat=ACCEPTEE_PROF;
+}
+
+public void modifProfDate(){
+	if(this.isEtatInitial() || this.isUpdate())
+	this.etat=DATE_MODIFIEE;
+}
+
+public void modifProfDuree(){
+	if(this.isEtatInitial() || this.isUpdate())
+	this.etat=DUREE_MODIFIEE;
+}
+
+public void modifProfAP(){
+	if(this.isEtatInitial() || this.isUpdate())
+	this.etat=DUREE_MODIFIEE;
+}
+
+public boolean isUpdateDateByTeacher(){
+	Boolean bool = (this.etat & DATE_MODIFIEE ) == DATE_MODIFIEE;
+	return bool;
+}
+
+public boolean isUpdateDurationByTeacher(){
+	Boolean bool = (this.etat & DUREE_MODIFIEE ) == DUREE_MODIFIEE;
+	return bool;
+}
+
+public boolean isUpdateAPByTeacher(){
+	Boolean bool = (this.etat & AP_MODIFIEE ) == AP_MODIFIEE;
+	return bool;
+}
+
+public void RefusedEleve(){
+	if(this.isUpdateDateByTeacher()||isUpdateDurationByTeacher()||isUpdateAPByTeacher())
+	this.etat=REFUSEE_ELEVE_MODIF_PROF;
+}
 
 }
