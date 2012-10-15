@@ -10,11 +10,11 @@ import org.ldv.sio.getap.DVCTAPException;
  */
 
 public class DemandeValidationConsoTempsAccPers {
-	private static final int CREER_ELEVE=0;
 	private static final int ACCEPTEE_ELEVE_MODIF_PROF=1;
 	private static final int REFUSEE_ELEVE_MODIF_PROF=2;
 	private static final int MODIF_ELEVE=4;
 	private static final int ANNULEE_ELEVE=8;
+	private static final int CREER_ELEVE=16;
 	private static final int ACCEPTEE_PROF=32;
 	private static final int REFUSEE_PROF=64;
 	private static final int DATE_MODIFIEE =1024;
@@ -156,13 +156,13 @@ public class DemandeValidationConsoTempsAccPers {
 	 * @param etat
 	 *            prend ses valeur dans :
 	 *            <ul>
-	 *            <li>0 - demande créée par l'élève</li>
 	 *            <li>1 - demande acceptée par l'élève aprés modification du
 	 *            professeur</li>
 	 *            <li>2 - demande rejetée par l'élève aprés modification du
 	 *            professeur</li>
 	 *            <li>4 - demande modifiée par l'élève</li>
 	 *            <li>8 - demande annulée par l'élève</li>
+	 *            <li>16 - demande créée par l'élève</li>
 	 *            <li>32 - demande validée par le professeur</li>
 	 *            <li>64 - demande refusée par le professeur</li>
 	 *            <li>1024 - demande où la date a été modifiée par le professeur
@@ -189,6 +189,7 @@ public class DemandeValidationConsoTempsAccPers {
 	}
 
 
+	/* Masques */
 	
 public boolean isEtatInitial(){
 		Boolean bool = (this.etat & CREER_ELEVE ) == CREER_ELEVE;
@@ -199,35 +200,10 @@ public boolean isUpdate(){
 		Boolean bool = (this.etat & MODIF_ELEVE ) == MODIF_ELEVE;
 		return bool;
 }
-	
-public void annuleeEleve(){
-	if(this.isEtatInitial() || this.isUpdate())
-	this.etat=ANNULEE_ELEVE;
-}
 
-public void refuseeProf(){
-	if(this.isEtatInitial() || this.isUpdate())
-	this.etat=REFUSEE_PROF;
-}
-
-public void valideeProf(){
-	if(this.isEtatInitial() || this.isUpdate())
-	this.etat=ACCEPTEE_PROF;
-}
-
-public void modifProfDate(){
-	if(this.isEtatInitial() || this.isUpdate())
-	this.etat=DATE_MODIFIEE;
-}
-
-public void modifProfDuree(){
-	if(this.isEtatInitial() || this.isUpdate())
-	this.etat=DUREE_MODIFIEE;
-}
-
-public void modifProfAP(){
-	if(this.isEtatInitial() || this.isUpdate())
-	this.etat=DUREE_MODIFIEE;
+public boolean isValideeProf(){
+	Boolean bool = (this.etat & ACCEPTEE_PROF ) == ACCEPTEE_PROF;
+	return bool;
 }
 
 public boolean isUpdateDateByTeacher(){
@@ -245,9 +221,47 @@ public boolean isUpdateAPByTeacher(){
 	return bool;
 }
 
+/* Méthodes changeant l'état d'une demande */
+	
+public void annuleeEleve(){
+	if(this.isEtatInitial() || this.isUpdate())
+	this.etat=ANNULEE_ELEVE;
+}
+
+public void refuseeProf(){
+	if(this.isEtatInitial() || this.isUpdate())
+	this.etat=REFUSEE_PROF;
+}
+
+public void valideeProf(){
+	if(this.isEtatInitial() || this.isUpdate())
+	this.etat=ACCEPTEE_PROF;
+}
+
+
+public void modifProfDate(){
+	if(this.isEtatInitial() || this.isUpdate())
+	this.etat=DATE_MODIFIEE;
+}
+
+public void modifProfDuree(){
+	if(this.isEtatInitial() || this.isUpdate())
+	this.etat=DUREE_MODIFIEE;
+}
+
+public void modifProfAP(){
+	if(this.isEtatInitial() || this.isUpdate())
+	this.etat=DUREE_MODIFIEE;
+}
+
 public void RefusedEleve(){
 	if(this.isUpdateDateByTeacher()||isUpdateDurationByTeacher()||isUpdateAPByTeacher())
 	this.etat=REFUSEE_ELEVE_MODIF_PROF;
+}
+
+public void AcceptedEleve(){
+	if(this.isUpdateDateByTeacher()||isUpdateDurationByTeacher()||isUpdateAPByTeacher()||isValideeProf())
+	this.etat=ACCEPTEE_ELEVE_MODIF_PROF;
 }
 
 }

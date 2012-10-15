@@ -10,9 +10,9 @@ import org.junit.Test;
 public class DemandeValidationConsoTempsAccPersTest {
 	
 	@Before
-	public void testEtatInitial() {
-		
-	}
+		public void testEtatInitial() {
+			assertTrue("Etat initial", dvctap.isEtatInitial());
+			}
 
 
 	Classe nbrclasse = new Classe(1, "SIO22");
