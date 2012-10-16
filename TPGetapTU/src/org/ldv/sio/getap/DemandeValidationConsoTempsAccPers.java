@@ -149,7 +149,7 @@ public class DemandeValidationConsoTempsAccPers {
 	public int getEtat() {
 		return etat;
 	}
-	 
+
 	/**
 	 * Permet de modifier l'état de la demande
 	 * 
@@ -173,13 +173,13 @@ public class DemandeValidationConsoTempsAccPers {
 	 *            modifiée par le professeur</li>
 	 *            </ul>
 	 */
-	
-	
+
+
 	public void setEtat(int etat) {
 		this.etat = etat;
 	}
 
-	
+
 	@Override
 	public String toString() {
 		return "DemandeConsoTempsAccPers [id=" + id + ", anneeScolaire="
@@ -189,79 +189,134 @@ public class DemandeValidationConsoTempsAccPers {
 	}
 
 
-	/* Masques */
-	
-public boolean isEtatInitial(){
+	/* Masque: Vérifie si la demande est à l'état initial */
+
+	public boolean isEtatInitial(){
 		Boolean bool = (this.etat & CREER_ELEVE ) == CREER_ELEVE;
 		return bool;
 	}
+	
+	
+	/* Masque: Vérifie si la demande est annulée */
 
-public boolean isUpdate(){
+	public boolean isAnnulee(){
+		Boolean bool = (this.etat & ANNULEE_ELEVE ) == ANNULEE_ELEVE;
+		return bool;
+	}
+
+	/* Masque: Vérifie si la demande est refusé par le prof */
+
+	public boolean isRefuseeProf(){
+		Boolean bool = (this.etat & REFUSEE_PROF ) == REFUSEE_PROF;
+		return bool;
+	}
+	
+	/* Masque: Vérifie si la demande a été modifiée par l'élève */
+
+	public boolean isUpdate(){
 		Boolean bool = (this.etat & MODIF_ELEVE ) == MODIF_ELEVE;
 		return bool;
-}
+	}
 
-public boolean isValideeProf(){
-	Boolean bool = (this.etat & ACCEPTEE_PROF ) == ACCEPTEE_PROF;
-	return bool;
-}
+	/* Masque: Vérifie si la demande a été modifiée acceptée par le prof */
 
-public boolean isUpdateDateByTeacher(){
-	Boolean bool = (this.etat & DATE_MODIFIEE ) == DATE_MODIFIEE;
-	return bool;
-}
+	public boolean isValideeProf(){
+		Boolean bool = (this.etat & ACCEPTEE_PROF ) == ACCEPTEE_PROF;
+		return bool;
+	}
 
-public boolean isUpdateDurationByTeacher(){
-	Boolean bool = (this.etat & DUREE_MODIFIEE ) == DUREE_MODIFIEE;
-	return bool;
-}
+	/* Masque: Vérifie si la date de la demande a été modifiée par le prof */
 
-public boolean isUpdateAPByTeacher(){
-	Boolean bool = (this.etat & AP_MODIFIEE ) == AP_MODIFIEE;
-	return bool;
-}
+	public boolean isUpdateDateByTeacher(){
+		Boolean bool = (this.etat & DATE_MODIFIEE ) == DATE_MODIFIEE;
+		return bool;
+	}
 
-/* Méthodes changeant l'état d'une demande */
+	/* Masque: Vérifie si la durée de la demande a été modifiée par le prof */
+
+	public boolean isUpdateDurationByTeacher(){
+		Boolean bool = (this.etat & DUREE_MODIFIEE ) == DUREE_MODIFIEE;
+		return bool;
+	}
+
+	/* Masque: Vérifie si la matière de la demande a été modifiée par le prof */
+
+	public boolean isUpdateAPByTeacher(){
+		Boolean bool = (this.etat & AP_MODIFIEE ) == AP_MODIFIEE;
+		return bool;
+	}
 	
-public void annuleeEleve(){
-	if(this.isEtatInitial() || this.isUpdate())
-	this.etat=ANNULEE_ELEVE;
-}
+	/* Masque: Vérifie si la matière de la demande a été modifiée par le prof */
 
-public void refuseeProf(){
-	if(this.isEtatInitial() || this.isUpdate())
-	this.etat=REFUSEE_PROF;
-}
+	public boolean isRefusedEleve(){
+		Boolean bool = (this.etat & REFUSEE_ELEVE_MODIF_PROF ) == REFUSEE_ELEVE_MODIF_PROF;
+		return bool;
+	}
+	
+	/* Masque: Vérifie si la matière de la demande a été modifiée par le prof */
 
-public void valideeProf(){
-	if(this.isEtatInitial() || this.isUpdate())
-	this.etat=ACCEPTEE_PROF;
-}
+	public boolean isAcceptedEleve(){
+		Boolean bool = (this.etat & ACCEPTEE_ELEVE_MODIF_PROF ) == ACCEPTEE_ELEVE_MODIF_PROF;
+		return bool;
+	}
+	
+	/* Méthodes changeant l'état en ANNULEE_ELEVE si état précédent possible */
+
+	public void annuleeEleve(){
+		if(this.isEtatInitial() || this.isUpdate()) {
+			this.etat=ANNULEE_ELEVE;
+		}
+	}
+
+	/* Méthodes changeant l'état en REFUSEE_ELEVE si état précédent possible */
+
+	public void refuseeProf(){
+		if(this.isEtatInitial() || this.isUpdate())
+			this.etat=REFUSEE_PROF;
+	}
+
+	/* Méthodes changeant l'état en ACCEPTEE_PROF si état précédent possible */
+
+	public void valideeProf(){
+		if(this.isEtatInitial() || this.isUpdate())
+			this.etat=ACCEPTEE_PROF;
+	}
+
+	/* Méthodes changeant l'état en DATE_MODIFIEE si état précédent possible */
+
+	public void modifProfDate(){
+		if(this.isEtatInitial() || this.isUpdate())
+			this.etat=DATE_MODIFIEE;
+	}
+
+	/* Méthodes changeant l'état en DUREE_MODIFIEE si état précédent possible */
+
+	public void modifProfDuree(){
+		if(this.isEtatInitial() || this.isUpdate())
+			this.etat=DUREE_MODIFIEE;
+	}
+
+	/* Méthodes changeant l'état en DUREE_MODIFIEE si état précédent possible */
+
+	public void modifProfAP(){
+		if(this.isEtatInitial() || this.isUpdate())
+			this.etat=AP_MODIFIEE;
+	}
+
+	/* Méthodes changeant l'état en REFUSEE_ELEVE_MODIF_PROF si état précédent possible */
+
+	public void RefusedEleve(){
+		if(this.isUpdateDateByTeacher()||isUpdateDurationByTeacher()||isUpdateAPByTeacher())
+			this.etat=REFUSEE_ELEVE_MODIF_PROF;
+	}
+
+	/* Méthodes changeant l'état en ACCEPTEE_ELEVE_MODIF_PROF si état précédent possible */
+
+	public void AcceptedEleve(){
+		if(this.isUpdateDateByTeacher()||isUpdateDurationByTeacher()||isUpdateAPByTeacher()||isValideeProf())
+			this.etat=ACCEPTEE_ELEVE_MODIF_PROF;
+	}
 
 
-public void modifProfDate(){
-	if(this.isEtatInitial() || this.isUpdate())
-	this.etat=DATE_MODIFIEE;
-}
-
-public void modifProfDuree(){
-	if(this.isEtatInitial() || this.isUpdate())
-	this.etat=DUREE_MODIFIEE;
-}
-
-public void modifProfAP(){
-	if(this.isEtatInitial() || this.isUpdate())
-	this.etat=DUREE_MODIFIEE;
-}
-
-public void RefusedEleve(){
-	if(this.isUpdateDateByTeacher()||isUpdateDurationByTeacher()||isUpdateAPByTeacher())
-	this.etat=REFUSEE_ELEVE_MODIF_PROF;
-}
-
-public void AcceptedEleve(){
-	if(this.isUpdateDateByTeacher()||isUpdateDurationByTeacher()||isUpdateAPByTeacher()||isValideeProf())
-	this.etat=ACCEPTEE_ELEVE_MODIF_PROF;
-}
 
 }
